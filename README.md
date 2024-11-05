@@ -6,12 +6,6 @@
 </p>
 <br/>
 
-![tests](https://github.com/synek/codeline/workflows/Full%20Tests/badge.svg)
-
-<p align="center">
-  Labfile is a declarative file format for computational science, enabling orchestration and automation of experiments.
-</p>
-
 ## Note
 
 *This repository is the parser library for `Labfile`, to be used for building new experiment orchestration tools.*
@@ -29,3 +23,7 @@
 ## Contributing
 
 Labfile is in early development. We will start accepting PRs soon once has stabilised a little. However, please join the [discussions](https://github.com/flywheelhq/labfile/discussions), add [issues](https://github.com/flywheelhq/labfile/issues), and share your use-cases to help steer the design.
+
+## Flywheel
+
+Science needs better software tools. [Flywheel](https://flywhl.dev/) is an open source collective building new tools to preserve scientific momentum, inspired by devtools and devops culture.
