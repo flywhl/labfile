@@ -1,0 +1,13 @@
+USE PROVIDER torch
+
+EXPERIMENT SupervisedTraining AS train
+    WITH
+        epochs  100
+        lr      0.0005
+        batch   128
+        dt      0.001
+
+EXPERIMENT SimulateReach AS single_reach
+    WITH
+        network train.network
+

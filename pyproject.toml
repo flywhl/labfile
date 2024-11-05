@@ -1,0 +1,30 @@
+[project]
+name = "labfile"
+version = "0.1.0"
+description = "Add your description here"
+authors = [
+    { name = "Rory Byrne", email = "rory@rory.bio" }
+]
+dependencies = [
+    "pydantic>=2.9.2",
+    "pydantic-settings>=2.6.1",
+    "lark>=1.2.2",
+]
+readme = "README.md"
+requires-python = ">= 3.8"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.rye]
+managed = true
+dev-dependencies = [
+    "pytest>=8.3.3",
+]
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[tool.hatch.build.targets.wheel]
+packages = ["labfile"]

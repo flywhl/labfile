@@ -1,0 +1,25 @@
+// Labfile Grammar
+
+start: statement+
+
+statement: provider
+         | experiment
+
+provider: "USE" "PROVIDER" simple_identifier
+
+experiment: "EXPERIMENT" simple_identifier "AS" simple_identifier with_clause
+
+with_clause: "WITH" with_param+
+
+with_param: simple_identifier value
+
+value: NUMBER
+     | dotted_identifier
+
+dotted_identifier: simple_identifier ("." simple_identifier)*
+
+simple_identifier: /[a-zA-Z_][\w-]*/
+
+%import common.NUMBER
+%import common.WS
+%ignore WS
