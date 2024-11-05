@@ -8,7 +8,14 @@
 
 ## Note
 
-*This repository is the parser library for `Labfile`, to be used for building new experiment orchestration tools.*
+*Labfile is in proof-of-concept stage.*
+
+This repository is the *parser* for `Labfile`, to be used as a library for building more complex tools.
+
+## Example
+
+<img width="600" alt="image" src="https://github.com/user-attachments/assets/11ec6161-b8b5-4dd1-955f-87d1bb471e70">
+
 
 ## Installation
 
