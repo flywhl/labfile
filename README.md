@@ -14,7 +14,9 @@ This repository is the *parser* for `Labfile`, to be used as a library for build
 
 ## Example
 
-<img width="600" alt="image" src="https://github.com/user-attachments/assets/11ec6161-b8b5-4dd1-955f-87d1bb471e70">
+<p align="center">
+  <img width="600" alt="image" src="https://github.com/user-attachments/assets/11ec6161-b8b5-4dd1-955f-87d1bb471e70">
+</p>
 
 
 ## Installation
