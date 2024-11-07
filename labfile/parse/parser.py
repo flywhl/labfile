@@ -13,7 +13,7 @@ def _build_parser(grammar: Path) -> Lark:
     return Lark(labfile_grammar, start="start", parser="lalr")
 
 
-class Parser:
+class Labfile:
     def __init__(self, grammar: Path, transformer: LabfileTransformer) -> None:
         self._parser = _build_parser(grammar)
         self._transformer = transformer
