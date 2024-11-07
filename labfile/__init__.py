@@ -1,4 +1,3 @@
-from labfile.parse.parser import Labfile
+from labfile.parse.parser import parse
 
-__all__ = ["Labfile"]
-
+__all__ = ["parse"]

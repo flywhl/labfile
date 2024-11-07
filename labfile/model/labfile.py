@@ -13,6 +13,6 @@ class Provider(BaseModel):
     name: str
 
 
-class Project(BaseModel):
+class Labfile(BaseModel):
     providers: list[Provider]
     experiments: list[Experiment]

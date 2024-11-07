@@ -5,7 +5,7 @@ from typing import Any, TypeAlias, Union
 from pydantic import BaseModel
 from abc import ABC, abstractmethod
 
-from labfile.model.project import Experiment, Project, Provider
+from labfile.model.labfile import Experiment, Labfile, Provider
 
 logger = logging.getLogger(__name__)
 
@@ -64,7 +64,7 @@ class ProviderDefinition(ResourceDefinition):
 class LabfileTransformer(Transformer):
     """Convert an AST into a Domain object"""
 
-    def start(self, items: list[ResourceDefinition]) -> Project:
+    def start(self, items: list[ResourceDefinition]) -> Labfile:
         resources = [item.to_domain() for item in items]
         experiments = [
             resource for resource in resources if isinstance(resource, Experiment)
@@ -73,7 +73,7 @@ class LabfileTransformer(Transformer):
         providers = [
             resource for resource in resources if isinstance(resource, Provider)
         ]
-        return Project(experiments=experiments, providers=providers)
+        return Labfile(experiments=experiments, providers=providers)
 
     def statement(self, items: list[Any]) -> Any:
         return items[0]
