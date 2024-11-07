@@ -4,6 +4,7 @@ from lark import Lark, Tree
 
 from labfile.model.project import Project
 from labfile.parse.transform import LabfileTransformer
+from labfile.config import Config
 
 
 def _build_parser(grammar: Path) -> Lark:
@@ -14,8 +15,12 @@ def _build_parser(grammar: Path) -> Lark:
 
 
 class Labfile:
-    def __init__(self, grammar: Path, transformer: LabfileTransformer) -> None:
-        self._parser = _build_parser(grammar)
+    def __init__(
+        self,
+        transformer: LabfileTransformer = LabfileTransformer(),
+        config: Config = Config(),
+    ) -> None:
+        self._parser = _build_parser(config.grammar_path)
         self._transformer = transformer
 
     def parse(self, source: str) -> Project:
