@@ -19,7 +19,7 @@ value: NUMBER
      | dotted_identifier
      | reference
 
-reference: "@" dotted_identifier "." dotted_identifier
+reference: "@" simple_identifier "." simple_identifier
 
 dotted_identifier: simple_identifier ("." simple_identifier)*
 
