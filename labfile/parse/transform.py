@@ -48,9 +48,14 @@ class ResourceDefinition(BaseModel, ABC):
 
 class ExperimentDefinition(ResourceDefinition):
     parameters: ParameterSet
+    path: str
 
     def to_domain(self) -> Experiment:
-        return Experiment(name=self.name, parameters=self.parameters.values)
+        return Experiment(
+            name=self.name,
+            parameters=self.parameters.values,
+            path=self.path
+        )
 
 
 class ProviderDefinition(ResourceDefinition):
@@ -83,14 +88,24 @@ class LabfileTransformer(Transformer):
         return ProviderDefinition(name=provider_name)
 
     def experiment(
-        self, items: list[Union[Token, ParameterSet]]
+        self, items: list[Union[Token, str, ParameterSet]]
     ) -> ExperimentDefinition:
         experiment_name = str(items[1])
-        parameters = items[2]
+        path = items[3]
+        parameters = items[4]
         if not isinstance(parameters, ParameterSet):
             raise ValueError("Expected ParameterSet for experiment parameters")
+        if not isinstance(path, str):
+            raise ValueError("Expected string for experiment path")
 
-        return ExperimentDefinition(name=experiment_name, parameters=parameters)
+        return ExperimentDefinition(
+            name=experiment_name,
+            parameters=parameters,
+            path=path
+        )
+
+    def via_clause(self, items: list[str]) -> str:
+        return items[0]
 
     def with_clause(self, items: list[Parameter]) -> ParameterSet:
         return ParameterSet.from_parameters(items)
