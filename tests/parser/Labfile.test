@@ -1,13 +1,15 @@
 USE PROVIDER torch
 
-EXPERIMENT SupervisedTraining AS train
+EXPERIMENT SomeExp AS exp1
+    VIA exp1.py
     WITH
         epochs  100
         lr      0.0005
         batch   128
         dt      0.001
 
-EXPERIMENT SimulateReach AS single_reach
+EXPERIMENT OtherExp AS exp2
+    VIA exp2.py
     WITH
         network train.network
 
