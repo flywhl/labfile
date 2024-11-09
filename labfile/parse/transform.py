@@ -5,7 +5,7 @@ from typing import Any, TypeAlias, Union
 from pydantic import BaseModel
 from abc import ABC, abstractmethod
 
-from labfile.model.labfile import Experiment, Labfile, Provider
+from labfile.model.labfile import Experiment, Labfile, Provider, Reference
 
 logger = logging.getLogger(__name__)
 
@@ -116,8 +116,14 @@ class LabfileTransformer(Transformer):
             name=str(items[0]), value=self._convert_value(items[1])
         )
 
-    def value(self, items: list[Token]) -> Token:
+    def value(self, items: list[Union[Token, Reference]]) -> Union[Token, Reference]:
         return items[0]
+
+    def reference(self, items: list[Token]) -> Reference:
+        experiment_path = str(items[0])
+        output_path = str(items[1])
+        # We'll need to resolve the owner later when we have access to all experiments
+        return Reference(owner=None, path=f"{experiment_path}.{output_path}")
 
     def dotted_identifier(self, items: list[Token]) -> str:
         return ".".join(str(item) for item in items)

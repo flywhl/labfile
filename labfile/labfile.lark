@@ -17,6 +17,9 @@ with_param: simple_identifier value
 
 value: NUMBER
      | dotted_identifier
+     | reference
+
+reference: "@" dotted_identifier "." dotted_identifier
 
 dotted_identifier: simple_identifier ("." simple_identifier)*
 
