@@ -91,6 +91,7 @@ class LabfileTransformer(Transformer):
         self, items: list[Union[Token, str, ParameterSet]]
     ) -> ExperimentDefinition:
         experiment_name = str(items[1])
+        experiment_alias = str(items[2])
         path = items[3]
         parameters = items[4]
         if not isinstance(parameters, ParameterSet):
@@ -99,7 +100,7 @@ class LabfileTransformer(Transformer):
             raise ValueError("Expected string for experiment path")
 
         return ExperimentDefinition(
-            name=experiment_name,
+            name=experiment_alias,
             parameters=parameters,
             path=path
         )
