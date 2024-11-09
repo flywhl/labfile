@@ -5,12 +5,18 @@ from typing import Any, TypeAlias, Union
 from pydantic import BaseModel
 from abc import ABC, abstractmethod
 
-from labfile.model.labfile import Experiment, Labfile, Provider, Reference as ModelReference
+from labfile.model.labfile import (
+    Experiment,
+    Labfile,
+    Provider,
+    Reference as ModelReference,
+)
 from typing import Optional
 
 logger = logging.getLogger(__name__)
 
 ### INTERMEDIATE REPRESENTATION #################
+
 
 class Reference(BaseModel):
     owner: Optional[Experiment] = None
@@ -64,17 +70,19 @@ class ExperimentDefinition(ResourceDefinition):
         exp = Experiment(
             name=self.name,
             parameters={},  # Start with empty parameters
-            path=self.path
+            path=self.path,
         )
-        
+
         # Then populate parameters, converting references
         for name, value in self.parameters.values.items():
+            print(f"{name=}")
+            print(f"{value=}")
             if isinstance(value, Reference):
                 # Convert intermediate Reference to model Reference with this experiment as owner
-                parameters[name] = value.to_domain(owner=exp)
+                exp.parameters[name] = value.to_domain(owner=exp)
             else:
                 exp.parameters[name] = value
-                
+
         return exp
 
 
@@ -106,7 +114,7 @@ class LabfileTransformer(Transformer):
         for exp in experiments:
             for name, value in exp.parameters.items():
                 if isinstance(value, Reference):
-                    exp_name = value.path.split('.')[0]
+                    exp_name = value.path.split(".")[0]
                     if exp_name in exp_lookup:
                         # Convert intermediate Reference to model Reference
                         exp.parameters[name] = value.to_domain(exp_lookup[exp_name])
@@ -135,9 +143,7 @@ class LabfileTransformer(Transformer):
             raise ValueError("Expected string for experiment path")
 
         return ExperimentDefinition(
-            name=experiment_alias,
-            parameters=parameters,
-            path=path
+            name=experiment_alias, parameters=parameters, path=path
         )
 
     def via_clause(self, items: list[str]) -> str:
