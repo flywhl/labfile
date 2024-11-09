@@ -90,10 +90,10 @@ class LabfileTransformer(Transformer):
     def experiment(
         self, items: list[Union[Token, str, ParameterSet]]
     ) -> ExperimentDefinition:
-        experiment_name = str(items[1])
-        experiment_alias = str(items[2])
-        path = items[3]
-        parameters = items[4]
+        experiment_name = str(items[0])
+        experiment_alias = str(items[1])
+        path = items[2]
+        parameters = items[3]
         if not isinstance(parameters, ParameterSet):
             raise ValueError("Expected ParameterSet for experiment parameters")
         if not isinstance(path, str):
