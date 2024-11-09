@@ -7,6 +7,7 @@ ParameterValue: TypeAlias = Union[int, float, str]
 class Experiment(BaseModel):
     name: str
     parameters: dict[str, ParameterValue]
+    path: str
 
 
 class Provider(BaseModel):
