@@ -65,7 +65,7 @@ class ExperimentDefinition(ResourceDefinition):
     parameters: ParameterSet
     path: str
 
-    def to_domain(self) -> Experiment:
+    def to_domain(self, exp_lookup: dict[str, "ExperimentDefinition"]) -> Experiment:
         exp = Experiment(
             name=self.name,
             parameters={},  # Start with empty parameters
@@ -77,9 +77,12 @@ class ExperimentDefinition(ResourceDefinition):
             if isinstance(value, Reference):
                 # Get the referenced experiment name from the path
                 ref_exp_name = value.path.split('.')[0]
-                # Note: at this point the reference's owner will be resolved later
-                # in the LabfileTransformer.start() method
-                exp.parameters[name] = ModelReference(owner=None, path=value.path)
+                if ref_exp_name not in exp_lookup:
+                    raise ValueError(f"Referenced experiment {ref_exp_name} not found")
+                    
+                # Convert the referenced experiment definition to domain model
+                referenced_exp = exp_lookup[ref_exp_name].to_domain(exp_lookup)
+                exp.parameters[name] = value.to_domain(owner=referenced_exp)
             else:
                 exp.parameters[name] = value
                 
@@ -98,28 +101,24 @@ class LabfileTransformer(Transformer):
     """Convert an AST into a Domain object"""
 
     def start(self, items: list[ResourceDefinition]) -> Labfile:
-        # First create all domain objects
-        resources = [item.to_domain() for item in items]
+        # Create lookup of experiment definitions
+        exp_defs = [item for item in items if isinstance(item, ExperimentDefinition)]
+        exp_lookup = {exp.name: exp for exp in exp_defs}
+        
+        # Convert to domain objects with access to lookup
+        resources = []
+        for item in items:
+            if isinstance(item, ExperimentDefinition):
+                resources.append(item.to_domain(exp_lookup))
+            else:
+                resources.append(item.to_domain())
+                
         experiments = [
             resource for resource in resources if isinstance(resource, Experiment)
         ]
         providers = [
             resource for resource in resources if isinstance(resource, Provider)
         ]
-
-        # Create experiment lookup by name
-        exp_lookup = {exp.name: exp for exp in experiments}
-
-        # Resolve references
-        for exp in experiments:
-            for name, value in exp.parameters.items():
-                if isinstance(value, Reference):
-                    exp_name = value.path.split(".")[0]
-                    if exp_name in exp_lookup:
-                        # Convert intermediate Reference to model Reference
-                        exp.parameters[name] = value.to_domain(exp_lookup[exp_name])
-                    else:
-                        raise ValueError(f"Referenced experiment {exp_name} not found")
 
         return Labfile(experiments=experiments, providers=providers)
 
