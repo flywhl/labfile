@@ -60,20 +60,22 @@ class ExperimentDefinition(ResourceDefinition):
     path: str
 
     def to_domain(self) -> Experiment:
-        parameters = {}
-        for name, value in self.parameters.values.items():
-            if isinstance(value, Reference):
-                # Convert intermediate Reference to model Reference
-                # Note: owner will be None at this point
-                parameters[name] = value
-            else:
-                parameters[name] = value
-                
-        return Experiment(
+        # First create the experiment without resolving references
+        exp = Experiment(
             name=self.name,
-            parameters=parameters,
+            parameters={},  # Start with empty parameters
             path=self.path
         )
+        
+        # Then populate parameters, converting references
+        for name, value in self.parameters.values.items():
+            if isinstance(value, Reference):
+                # Convert intermediate Reference to model Reference with this experiment as owner
+                parameters[name] = value.to_domain(owner=exp)
+            else:
+                exp.parameters[name] = value
+                
+        return exp
 
 
 class ProviderDefinition(ResourceDefinition):
