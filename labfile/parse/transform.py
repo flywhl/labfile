@@ -66,23 +66,23 @@ class ExperimentDefinition(ResourceDefinition):
     path: str
 
     def to_domain(self) -> Experiment:
-        # First create the experiment without resolving references
         exp = Experiment(
             name=self.name,
             parameters={},  # Start with empty parameters
             path=self.path,
         )
-
+        
         # Then populate parameters, converting references
         for name, value in self.parameters.values.items():
-            print(f"{name=}")
-            print(f"{value=}")
             if isinstance(value, Reference):
-                # Convert intermediate Reference to model Reference with this experiment as owner
-                exp.parameters[name] = value.to_domain(owner=exp)
+                # Get the referenced experiment name from the path
+                ref_exp_name = value.path.split('.')[0]
+                # Note: at this point the reference's owner will be resolved later
+                # in the LabfileTransformer.start() method
+                exp.parameters[name] = ModelReference(owner=None, path=value.path)
             else:
                 exp.parameters[name] = value
-
+                
         return exp
 
 
