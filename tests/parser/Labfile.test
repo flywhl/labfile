@@ -11,6 +11,5 @@ EXPERIMENT SomeExp AS exp1
 EXPERIMENT OtherExp AS exp2
     VIA exp2.py
     WITH
-        network train.network
         model   @exp1.trained_model
 
