@@ -38,7 +38,7 @@ class LabfileTransformer(Transformer):
 
     def provider(self, items: list[Union[Token, dict]]) -> ProviderNode:
         provider_name = str(items[0])
-        return ProviderNode(name=provider_name)
+        return ProviderNode(name=provider_name, kind=ResourceKind.PROVIDER)
 
     def experiment(
         self, items: list[Union[Token, str, dict]]
