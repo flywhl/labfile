@@ -2,7 +2,7 @@ from pathlib import Path
 
 from lark import Lark, Tree
 
-from labfile.model.labfile import Labfile
+from labfile.model.tree import LabfileNode
 from labfile.parse.transform import LabfileTransformer
 from labfile.config import Config
 
@@ -23,7 +23,7 @@ class Parser:
         self._parser = _build_parser(config.grammar_path)
         self._transformer = transformer
 
-    def parse(self, source: str) -> Labfile:
+    def parse(self, source: str) -> LabfileNode:
         ast = self._parse_to_ast(source)
         return self._parse_to_domain(ast)
 
@@ -32,10 +32,10 @@ class Parser:
     def _parse_to_ast(self, source: str) -> Tree:
         return self._parser.parse(source)
 
-    def _parse_to_domain(self, ast: Tree) -> Labfile:
+    def _parse_to_domain(self, ast: Tree) -> LabfileNode:
         return self._transformer.transform(ast)
 
 
-def parse(labfile: Path) -> Labfile:
+def parse(labfile: Path) -> LabfileNode:
     parser = Parser()
     return parser.parse(labfile.read_text())

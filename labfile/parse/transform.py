@@ -1,15 +1,15 @@
 from decimal import Decimal
-from lark import Transformer, Token
+from lark import ParseError, Transformer, Token
 import logging
-from typing import Any, Union
+from typing import Any, TypeAlias, Union
 from labfile.model.tree import (
     ASTNode,
     LabfileNode,
     ProcessNode,
     ProviderNode,
     ReferenceNode,
-    NodeValue,
     ParameterNode,
+    ResourceKind,
 )
 
 logger = logging.getLogger(__name__)
@@ -24,13 +24,9 @@ class LabfileTransformer(Transformer):
     """Convert an AST into a Domain object"""
 
     def start(self, items: list[ASTNode]) -> LabfileNode:
-        processes = [
-            item for item in items if isinstance(item, ProcessNode)
-        ]
-        providers = [
-            item for item in items if isinstance(item, ProviderNode)
-        ]
-        
+        processes = [item for item in items if isinstance(item, ProcessNode)]
+        providers = [item for item in items if isinstance(item, ProviderNode)]
+
         return LabfileNode(processes=processes, providers=providers)
 
     def statement(self, items: list[Any]) -> Any:
@@ -40,21 +36,20 @@ class LabfileTransformer(Transformer):
         provider_name = str(items[0])
         return ProviderNode(name=provider_name, kind=ResourceKind.PROVIDER)
 
-    def experiment(
-        self, items: list[Union[Token, str, dict]]
-    ) -> ProcessNode:
+    def experiment(self, items: list[Union[Token, str, ParameterNode]]) -> ProcessNode:
         experiment_alias = str(items[1])
         via = items[2]
         parameters = items[3]
-        
+
+        if not isinstance(via, str):
+            raise ParseError("Expect 'via' to be a str")
+        if not isinstance(parameters, dict):
+            raise ParseError("Expected 'with' to be a ParameterNode")
+
         if not isinstance(via, str):
             raise ValueError("Expected string for experiment path")
 
-        return ProcessNode(
-            name=experiment_alias,
-            parameters=parameters,
-            via=via
-        )
+        return ProcessNode(name=experiment_alias, parameters=parameters, via=via)
 
     def via_clause(self, items: list[str]) -> str:
         return items[0]
@@ -71,7 +66,9 @@ class LabfileTransformer(Transformer):
         )
         return ParameterNode(name=str(items[0]), value=value)
 
-    def value(self, items: list[Union[Token, ReferenceNode]]) -> Union[Token, ReferenceNode]:
+    def value(
+        self, items: list[Union[Token, ReferenceNode]]
+    ) -> Union[Token, ReferenceNode]:
         return items[0]
 
     def reference(self, items: list[Token]) -> ReferenceNode:
