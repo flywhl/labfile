@@ -1,21 +1,20 @@
 from decimal import Decimal
 from lark import Transformer, Token
 import logging
-from typing import Any, Type, TypeAlias, TypeVar, Union
-from pydantic import BaseModel
-from abc import ABC, abstractmethod
-
-from labfile.model.labfile import (
-    Process,
-    Labfile,
-    Model,
-    Provider,
-    Resource,
-    ValueReference,
+from typing import Any, Union
+from labfile.model.tree import (
+    ASTNode,
+    LabfileNode,
+    ProcessNode,
+    ProviderNode,
+    ReferenceNode,
+    NodeValue,
+    ParameterNode,
 )
-from typing import Optional
 
 logger = logging.getLogger(__name__)
+
+LiteralValue: TypeAlias = Union[int, float, str]
 
 
 ### TRANSFORMER #################################
