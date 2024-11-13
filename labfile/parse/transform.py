@@ -6,7 +6,7 @@ from pydantic import BaseModel
 from abc import ABC, abstractmethod
 
 from labfile.model.labfile import (
-    Experiment,
+    Process,
     Labfile,
     Model,
     Provider,
@@ -89,11 +89,11 @@ class ResourceDefinition(Defn, ABC):
     def to_domain(self, symbols: "SymbolTable") -> Resource: ...
 
 
-class ExperimentDefinition(ResourceDefinition):
+class ProcessDefinition(ResourceDefinition):
     parameters: ParameterSet
     via: str
 
-    def to_domain(self, symbols: SymbolTable) -> Experiment:
+    def to_domain(self, symbols: SymbolTable) -> Process:
         parameters = {
             name: self._build_parameter(value, symbols)
             if isinstance(value, Reference)
@@ -101,13 +101,13 @@ class ExperimentDefinition(ResourceDefinition):
             for name, value in self.parameters.values.items()
         }
 
-        exp = Experiment(
+        process = Process(
             name=self.name,
             parameters=parameters,
             via=self.via,
         )
 
-        return exp
+        return process
 
     def _build_parameter(self, value: Reference, symbols: SymbolTable):
         ref_name = value.path.split(".")[0]
@@ -115,7 +115,7 @@ class ExperimentDefinition(ResourceDefinition):
         # the thing being pointed to
         ref_symbol = symbols.lookup(ref_name, expecting=ResourceDefinition)
         if not ref_symbol:
-            raise ValueError(f"Referenced experiment {ref_name} not found")
+            raise ValueError(f"Referenced process {ref_name} not found")
 
         return ValueReference(owner=ref_symbol.to_domain(symbols), attribute=value.path)
 
@@ -138,14 +138,14 @@ class LabfileTransformer(Transformer):
 
         resources = [item.to_domain(symbol_table) for item in items]
 
-        experiments = [
-            resource for resource in resources if isinstance(resource, Experiment)
+        processes = [
+            resource for resource in resources if isinstance(resource, Process)
         ]
         providers = [
             resource for resource in resources if isinstance(resource, Provider)
         ]
 
-        return Labfile(experiments=experiments, providers=providers)
+        return Labfile(processes=processes, providers=providers)
 
     def statement(self, items: list[Any]) -> Any:
         return items[0]
@@ -156,7 +156,7 @@ class LabfileTransformer(Transformer):
 
     def experiment(
         self, items: list[Union[Token, str, ParameterSet]]
-    ) -> ExperimentDefinition:
+    ) -> ProcessDefinition:
         # experiment_name = str(items[0])
         experiment_alias = str(items[1])
         via = items[2]
@@ -166,7 +166,7 @@ class LabfileTransformer(Transformer):
         if not isinstance(via, str):
             raise ValueError("Expected string for experiment path")
 
-        return ExperimentDefinition(
+        return ProcessDefinition(
             name=experiment_alias, parameters=with_parameters, via=via
         )
 
