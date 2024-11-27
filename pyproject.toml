@@ -21,6 +21,15 @@ build-backend = "hatchling.build"
 managed = true
 dev-dependencies = [
     "pytest>=8.3.3",
+    "black>=24.10.0",
+    "pylint>=3.3.1",
+    "isort>=5.13.2",
+    "flake8>=7.1.1",
+    "pyright>=1.1.388",
+    "flake8-pyproject>=1.2.3",
+    "tox>=4.23.2",
+    "coverage>=7.6.4",
+    "pre-commit>=4.0.1",
 ]
 
 [tool.hatch.metadata]

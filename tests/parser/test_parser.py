@@ -1,13 +1,11 @@
 from pathlib import Path
-from labfile.config import Config
-from labfile.parse.parser import Parser
-from labfile.parse.transform import LabfileTransformer
+from pprint import pprint
+from labfile import parse
+from labfile.model.tree import LabfileNode
 
 
-def test_foo():
-    config = Config()
-    labfile = Path(__file__).parent / "Labfile.test"
-    transformer = LabfileTransformer()
-    parser = Parser(config.grammar_path, transformer)
-    project = parser.parse(labfile.read_text())
-    print(project)
+def test_parse_should_work():
+    labfile_path = Path(__file__).parent / "Labfile.test"
+    labfile = parse(labfile_path)
+    assert isinstance(labfile, LabfileNode)
+    pprint(labfile)

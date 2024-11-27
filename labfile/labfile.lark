@@ -7,7 +7,9 @@ statement: provider
 
 provider: "USE" "PROVIDER" simple_identifier
 
-experiment: "EXPERIMENT" simple_identifier "AS" simple_identifier with_clause
+experiment: "EXPERIMENT" simple_identifier "AS" simple_identifier via_clause with_clause
+
+via_clause: "VIA" dotted_identifier
 
 with_clause: "WITH" with_param+
 
@@ -15,6 +17,9 @@ with_param: simple_identifier value
 
 value: NUMBER
      | dotted_identifier
+     | reference
+
+reference: "@" simple_identifier "." simple_identifier
 
 dotted_identifier: simple_identifier ("." simple_identifier)*
 
