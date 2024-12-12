@@ -23,7 +23,7 @@ This repository is the *parser* for `Labfile`, to be used as a library for build
 
 ## Installation and usage
 
-* `rye add labfile --git https://github.com/flywheelhq/labfile`
+* `rye add labfile --git https://github.com/flywhl/labfile`
 * ```python
   from pathlib import Path
   from labfile import parse
@@ -35,13 +35,13 @@ This repository is the *parser* for `Labfile`, to be used as a library for build
 
 ## Development
 
-* `git clone https://github.com/flywheelhq/labfile.git`
+* `git clone https://github.com/flywhl/labfile.git`
 * `cd labfile`
 * `rye sync`
 
 ## Contributing
 
-Labfile is in early development. We will start accepting PRs soon once it has stabilised a little. However, please join the [discussions](https://github.com/flywheelhq/labfile/discussions), add [issues](https://github.com/flywheelhq/labfile/issues), and share your use-cases to help steer the design.
+Labfile is in early development. We will start accepting PRs soon once it has stabilised a little. However, please join the [discussions](https://github.com/flywhl/labfile/discussions), add [issues](https://github.com/flywhl/labfile/issues), and share your use-cases to help steer the design.
 
 ## Flywheel
 
