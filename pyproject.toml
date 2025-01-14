@@ -1,39 +1,54 @@
 [project]
 name = "labfile"
-version = "0.1.0"
-description = "Add your description here"
+description = "A declarative file format for scientific experiments."
 authors = [
     { name = "Rory Byrne", email = "rory@rory.bio" }
 ]
+requires-python = ">=3.8"
 dependencies = [
-    "pydantic>=2.9.2",
     "pydantic-settings>=2.6.1",
     "lark>=1.2.2",
+    "pydantic>=2.10.3",
 ]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "License :: OSI Approved :: Apache Software License",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Operating System :: OS Independent",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Scientific/Engineering",
+    "Intended Audience :: Developers",
+    'Intended Audience :: Information Technology',
+    "Typing :: Typed",
+]
+license = "MIT"
 readme = "README.md"
-requires-python = ">= 3.8"
+dynamic = ["version"]
+
+[project.urls]
+Homepage = "https://github.com/flywhl/labfile"
+Repository = "https://github.com/flywhl/labfile"
+Documentation = "https://github.com/flywhl/labfile#readme"
+"Bug Tracker" = "https://github.com/flywhl/labfile/issues"
 
 [build-system]
-requires = ["hatchling"]
+requires = ["hatchling", "hatch-vcs"]
 build-backend = "hatchling.build"
 
-[tool.rye]
-managed = true
+[tool.hatch.version]
+source = "vcs"
+
+[tool.uv]
 dev-dependencies = [
-    "pytest>=8.3.3",
-    "black>=24.10.0",
-    "pylint>=3.3.1",
-    "isort>=5.13.2",
-    "flake8>=7.1.1",
-    "pyright>=1.1.388",
-    "flake8-pyproject>=1.2.3",
-    "tox>=4.23.2",
-    "coverage>=7.6.4",
-    "pre-commit>=4.0.1",
+    "coverage>=7.6.1",
+    "pre-commit>=3.5.0",
+    "pyright>=1.1.391",
+    "pytest>=8.3.4",
+    "ruff>=0.9.1",
 ]
-
-[tool.hatch.metadata]
-allow-direct-references = true
-
-[tool.hatch.build.targets.wheel]
-packages = ["labfile"]
