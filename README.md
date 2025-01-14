@@ -11,7 +11,9 @@
 
 
 ### Installation
-`rye add labfile --git https://github.com/flywhl/labfile`
+`uv add labfile`
+
+### Usage
 
 ```python
   from pathlib import Path
@@ -34,7 +36,7 @@
 
 * `git clone https://github.com/flywhl/labfile.git`
 * `cd labfile`
-* `rye sync`
+* `uv sync`
 
 ### Contributing
 
@@ -42,4 +44,4 @@ Labfile is in early development. We will start accepting PRs soon once it has st
 
 ## Flywheel
 
-Science needs better software tools. [Flywheel](https://flywhl.dev/) is an open source collective building (dev)tools to accelerate scientific momentum.
+Science needs better software tools. [Flywheel](https://flywhl.dev/) is an open source collective building (dev)tools to accelerate scientific momentum. Join our [Discord](https://discord.gg/kTkF2e69fH).
