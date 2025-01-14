@@ -1,29 +1,25 @@
 default:
     @just --list
 
-tox:
-    @tox
-
 test:
-    @pytest -s
+    @uv run pytest
 
-pylint:
-    rye run pylint labfile
+test-s:
+    @uv run pytest -s -o log_cli=True -o log_cli_level=DEBUG
 
-flake8:
-    rye run flake8 labfile
+ruff-fix:
+    uv run ruff format labfile
+
+ruff-check:
+    uv run ruff check labfile
 
 pyright:
-    rye run pyright labfile
+    uv run pyright labfile
 
 lint:
-    just pylint
-    just flake8
+    just ruff-check
     just pyright
 
-
 lint-file file:
-    - pylint {{file}}
-    - flake8 {{file}}
+    - ruff {{file}}
     - pyright {{file}}
-
