@@ -52,7 +52,10 @@ class LabfileTransformer(Transformer):
         return ProcessNode(name=experiment_alias, parameters=parameters, via=via)
 
     def via_clause(self, items: list[str]) -> str:
-        return items[0]
+        return str(items[0])
+
+    def file_path(self, items: list[Token]) -> str:
+        return str(items[0])
 
     def with_clause(self, items: list[ParameterNode]) -> dict:
         return {param.name: param.value for param in items}
