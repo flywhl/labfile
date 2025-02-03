@@ -41,8 +41,6 @@ class LabfileTransformer(Transformer):
         via = items[2]
         parameters = items[3]
 
-        if not isinstance(via, str):
-            raise ParseError("Expect 'via' to be a str")
         if not isinstance(parameters, dict):
             raise ParseError("Expected 'with' to be a ParameterNode")
 
@@ -54,8 +52,12 @@ class LabfileTransformer(Transformer):
     def via_clause(self, items: list[str]) -> str:
         return str(items[0])
 
-    def file_path(self, items: list[Token]) -> str:
+    def file_type(self, items: list[Token]) -> str:
         return str(items[0])
+
+    def file_path(self, items: list[Token]) -> str:
+        path = "/".join(items[:-1])
+        return f"{path}.{items[-1]}"
 
     def with_clause(self, items: list[ParameterNode]) -> dict:
         return {param.name: param.value for param in items}

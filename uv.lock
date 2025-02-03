@@ -251,7 +251,6 @@ wheels = [
 
 [[package]]
 name = "labfile"
-version = "0.1.dev9+g135e012.d20250114"
 source = { editable = "." }
 dependencies = [
     { name = "lark" },

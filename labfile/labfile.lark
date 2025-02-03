@@ -11,7 +11,8 @@ experiment: "EXPERIMENT" simple_identifier "AS" simple_identifier via_clause wit
 
 via_clause: "VIA" file_path
 
-file_path: /(?!\/)[a-zA-Z0-9_][a-zA-Z0-9_\/-]*\.py/
+file_path: simple_identifier ("/" simple_identifier)* "." file_type
+file_type: /[a-z]+/
 
 with_clause: "WITH" with_param+
 

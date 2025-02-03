@@ -1,7 +1,7 @@
 USE PROVIDER torch
 
 EXPERIMENT SomeExp AS exp1
-    VIA exp1.py
+    VIA src/foo/exp1.py
     WITH
         epochs  100
         lr      0.0005
@@ -9,7 +9,7 @@ EXPERIMENT SomeExp AS exp1
         dt      0.001
 
 EXPERIMENT OtherExp AS exp2
-    VIA exp2.py
+    VIA src/exp2.py
     WITH
         model   @exp1.trained_model
 
